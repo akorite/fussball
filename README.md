@@ -1,5 +1,6 @@
 <p align="center">
-  <img src="docs/images/pipeline.mmd" alt="Pipeline" width="100%">
+  <h1 align="center">⚽ Fussball</h1>
+  <p align="center"><em>Football over/under goals prediction with 64 features across 10 European leagues</em></p>
 </p>
 
 <p align="center">
@@ -47,26 +48,28 @@ graph TD
 
 ### Opening vs Closing Odds
 
-```
-Strategy A (Opening + Model) at edge>=0.05: +4.2% ROI, 226 bets, 59.3% WR
-Strategy B (Closing + Model) at edge>=0.05: +8.4% ROI, 73 bets, 64.4% WR
-```
+| Strategy | Edge | ROI | Bets | Win Rate |
+|---|---|---|---|---|
+| A: Opening + Model | ≥0.05 | **+4.2%** | 226 | 59.3% |
+| B: Closing + Model | ≥0.05 | **+8.4%** | 73 | 64.4% |
+| C: Market Movement | ≥0.05 | -10.3% | 224 | — |
 
 ### Asian Handicap
 
-```
-Model sign accuracy: 66.5% (vs 50.2% market)
-Brier advantage: +0.0286 over market
-```
+| Metric | Model | Market |
+|---|---|---|
+| Sign Accuracy | **66.5%** | 50.2% |
+| Brier Score | 0.2222 | 0.2508 |
+| Brier Advantage | **+0.0286** | — |
 
-### Feature Importance
+### Feature Importance (Top 5)
 
 ```
-1. market_implied_prob: 1313
-2. market_overround: 456
-3. market_log_odds: 340
-4. rest_advantage: 147  <-- NEW
-5. away_ppg_avg_5: 144
+ 1. market_implied_prob: 1313
+ 2. market_overround:    456
+ 3. market_log_odds:     340
+ 4. rest_advantage:      147  ← NEW
+ 5. away_ppg_avg_5:      144
 ```
 ## Architecture
 
@@ -152,8 +155,6 @@ python scripts/multiline_eval.py
 
 # League-specific models
 python scripts/league_eval.py
-
-# Full model evaluation with feature importance
 python scripts/league_eval.py
 ```
 
