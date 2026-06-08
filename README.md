@@ -1,11 +1,14 @@
-# Fussball
+<p align="center">
+  <img src="docs/images/pipeline.mmd" alt="Pipeline" width="100%">
+</p>
 
-**Football over/under goals prediction pipeline with 64 features across 10 European leagues.**
-
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-190-passing-brightgreen)](#testing)
-
+<p align="center">
+  <img src="https://img.shields.io/badge/python-3.11+-blue.svg" alt="Python 3.11+">
+  <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT">
+  <img src="https://img.shields.io/badge/tests-190-passing-brightgreen" alt="Tests">
+  <img src="https://img.shields.io/badge/features-64-orange" alt="Features">
+  <img src="https://img.shields.io/badge/leagues-10-red" alt="Leagues">
+</p>
 ---
 
 ## What is this?
@@ -14,52 +17,95 @@ Fussball is a complete ML pipeline for predicting football match outcomes — sp
 
 **The honest truth:** Closing market odds are brutally efficient. This project doesn't claim to beat them — it measures *how efficiently* they're priced and identifies the narrow windows where edges exist.
 
+## Pipeline
+
+```mermaid
+graph LR
+    A[Raw CSVs] --> B[Data Loader]
+    B --> C[64 Features]
+    C --> D[LightGBM]
+    D --> E[Backtest]
+    E --> F[Predictions]
+```
+
 ## Key Findings
 
-| Metric | Result |
-|---|---|
-| **Market efficiency** | Closing odds log loss: 0.6762 |
-| **Model log loss** | 0.6759 (best blend) — essentially identical |
-| **Opening odds edge** | +4.2% ROI at 5% edge threshold |
-| **Market movement signal** | When odds drift down, that side wins 55.4% |
-| **Asian handicap accuracy** | 66.5% sign prediction (vs 50.2% market) |
+```mermaid
+graph TD
+    A[Market Efficiency Study] --> B{Can we beat closing odds?}
+    B -->|No| C[Log Loss: 0.6762 vs 0.6759]
+    B -->|Yes, marginally| D[Opening Odds Edge]
+    D --> E[+4.2% ROI at 5% edge]
+    A --> G{What signals work?}
+    G -->|Yes| H[Market Movement]
+    H --> I[55.4% WR when odds drift down]
+    G -->|Yes| J[Rest Advantage]
+    J --> K[#4 most important feature]
+```
 
-### What works
+## Results
 
-- **Opening odds timing** — betting at opening prices before the market corrects shows a consistent edge
-- **Market movement** — the *direction* of odds movement from opening to closing predicts outcomes
-- **Rest advantage** — the #4 most important feature (above many rolling stats)
-
-### What doesn't
-
-- Feature engineering beyond what the market already knows
-- League-specific models (they overfit)
-- HMM-implied probabilities as standalone predictors
-
-## Architecture
+### Opening vs Closing Odds
 
 ```
-fussball/
-├── src/fussball/
-│   ├── data/
-│   │   ├── schema.py        # MatchRecord (Pydantic)
-│   │   └── loader.py        # Football-Data.co.uk CSV parser
-│   ├── features/
-│   │   ├── rolling.py       # Rolling averages (5/10/20 matches)
-│   │   ├── match.py         # Per-match stats
-│   │   ├── context.py       # Season context (matchweek, position)
-│   │   ├── odds.py          # Market-implied probabilities
-│   │   ├── h2h.py           # Head-to-head history
-│   │   ├── rest.py          # Rest days & schedule congestion
-│   │   ├── derby.py         # Derby/rivalry indicators
-│   │   └── hmm/             # Hidden Markov Model states
-│   ├── models/
-│   │   └── trainer.py       # LGBM training & tuning
-│   ├── backtest.py          # Walk-forward backtesting
-│   └── cli.py               # Click CLI
-├── scripts/                 # Evaluation scripts
-├── tests/                   # 190 tests
-└── data/raw/                # CSV downloads (gitignored)
+Strategy A (Opening + Model) at edge>=0.05: +4.2% ROI, 226 bets, 59.3% WR
+Strategy B (Closing + Model) at edge>=0.05: +8.4% ROI, 73 bets, 64.4% WR
+```
+
+### Asian Handicap
+
+```
+Model sign accuracy: 66.5% (vs 50.2% market)
+Brier advantage: +0.0286 over market
+```
+
+### Feature Importance
+
+```
+1. market_implied_prob: 1313
+2. market_overround: 456
+3. market_log_odds: 340
+4. rest_advantage: 147  <-- NEW
+5. away_ppg_avg_5: 144
+```
+## Architecture
+
+```mermaid
+graph TB
+    subgraph Data
+        loader.py --> schema.py
+    end
+    subgraph Features
+        rolling.py
+        match.py
+        context.py
+        odds.py
+        h2h.py
+        rest.py
+        derby.py
+        hmm/
+    end
+    subgraph Models
+        trainer.py
+        evaluator.py
+    end
+    schema.py --> rolling.py
+    schema.py --> match.py
+    schema.py --> context.py
+    schema.py --> odds.py
+    schema.py --> h2h.py
+    schema.py --> rest.py
+    schema.py --> derby.py
+    schema.py --> hmm/
+    rolling.py --> trainer.py
+    match.py --> trainer.py
+    context.py --> trainer.py
+    odds.py --> trainer.py
+    h2h.py --> trainer.py
+    rest.py --> trainer.py
+    derby.py --> trainer.py
+    hmm/ --> trainer.py
+    trainer.py --> evaluator.py
 ```
 
 ## Setup
@@ -124,6 +170,20 @@ python scripts/league_eval.py
 | **HMM states** | 6 | Expected goals, variance, entropy from Hidden Markov Model |
 | **Other** | 2 | Home advantage, goal difference trends |
 
+## Feature Breakdown
+
+```mermaid
+pie title Feature Categories
+    "Rolling Stats" : 30
+    "Market Odds" : 3
+    "Match Context" : 8
+    "Head-to-Head" : 8
+    "Rest & Schedule" : 4
+    "Derby Indicators" : 3
+    "HMM States" : 6
+    "Other" : 2
+```
+
 ## Data
 
 Free historical CSVs from [Football-Data.co.uk](https://www.football-data.co.uk/):
@@ -157,12 +217,14 @@ pytest -m "not slow"
 
 ## Contributing
 
-Contributions welcome. Areas that would actually move the needle:
+Contributions welcome! This project is honest about its findings — closing odds are brutally efficient. But there are narrow edges to be found:
 
 - **Better data sources** — xG, possession, lineup data for older seasons
 - **In-play features** — live match statistics
 - **Alternative markets** — correct score, half-time/full-time
 - **Ensemble methods** — combining multiple model architectures
+
+Open an issue or submit a PR.
 
 ## License
 

@@ -1,0 +1,50 @@
+Loaded 38,048 records in 22.8s
+Train: 34,291, Test: 3,757
+Features: 64 (108.7s)
+Market baseline: 0.6762
+Global LGBM:     0.6762 (-0.0000)
+Global blend:    0.6759 (-0.0003) w=0.50
+League models:   10
+League-specific: 0.7329 (+0.0567)
+League blend:    0.6762 (+0.0000) w=0.00
+Ensemble:        0.6759 (-0.0003) gw=0.5 lw=0.0 mw=0.5
+============================================================
+BEST: Global (LL=0.6759)
+============================================================
+ROI curve:
+  edge>=0.00: ROI=+1.9% (889 bets, WR=52%)
+  edge>=0.01: ROI=+1.2% (140 bets, WR=49%)
+  edge>=0.02: ROI=-12.3% (18 bets, WR=33%)
+  edge>=0.03: ROI=+0.0% (4 bets, WR=25%)
+  edge>=0.05: ROI=+0.0% (0 bets, WR=0%)
+  edge>=0.08: ROI=+0.0% (0 bets, WR=0%)
+  edge>=0.10: ROI=+0.0% (0 bets, WR=0%)
+  edge>=0.15: ROI=+0.0% (0 bets, WR=0%)
+Per-league (model vs market):
+  D1  : model=0.6364 mkt=0.6352 diff=+0.0012 ROI@5%=+0.0% WR=0% (n=306)
+  D2  : model=0.6832 mkt=0.6860 diff=-0.0029 ROI@5%=+0.0% WR=0% (n=306) <--
+  E0  : model=0.6834 mkt=0.6844 diff=-0.0010 ROI@5%=+0.0% WR=0% (n=380) <--
+  E1  : model=0.6898 mkt=0.6889 diff=+0.0008 ROI@5%=+0.0% WR=0% (n=552)
+  F1  : model=0.6642 mkt=0.6656 diff=-0.0014 ROI@5%=+0.0% WR=0% (n=305) <--
+  I1  : model=0.7005 mkt=0.7013 diff=-0.0007 ROI@5%=+0.0% WR=0% (n=380) <--
+  I2  : model=0.6845 mkt=0.6850 diff=-0.0005 ROI@5%=+0.0% WR=0% (n=380) <--
+  N1  : model=0.6459 mkt=0.6469 diff=-0.0010 ROI@5%=+0.0% WR=0% (n=306) <--
+  SP1 : model=0.6721 mkt=0.6720 diff=+0.0001 ROI@5%=+0.0% WR=0% (n=380)
+  SP2 : model=0.6778 mkt=0.6768 diff=+0.0010 ROI@5%=+0.0% WR=0% (n=462)
+Top 15 features:
+   1. market_implied_prob: 1340
+   2. market_overround: 439
+   3. market_log_odds: 313
+   4. rest_advantage: 153
+   5. away_ppg_avg_5: 146
+   6. away_goals_conceded_avg_10: 122
+   7. away_goals_conceded_avg_5: 117
+   8. home_shots_diff_avg_5: 111
+   9. home_shots_diff_avg_10: 106
+  10. away_goals_scored_avg_10: 104
+  11. away_goals_conceded_avg_20: 96
+  12. home_goals_scored_avg_20: 90
+  13. away_ppg_avg_10: 88
+  14. away_ppg_avg_20: 81
+  15. home_ppg_avg_5: 81
+Total: 112.1s

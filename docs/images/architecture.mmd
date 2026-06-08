@@ -1,0 +1,45 @@
+graph TB
+    subgraph Data
+        A[loader.py] --> B[schema.py]
+    end
+    subgraph Features
+        C[rolling.py]
+        D[match.py]
+        E[context.py]
+        F[odds.py]
+        G[h2h.py]
+        H[rest.py]
+        I[derby.py]
+        J[hmm/]
+    end
+    subgraph Models
+        K[trainer.py]
+        L[evaluator.py]
+    end
+    subgraph Scripts
+        M[opening_strategy.py]
+        N[ah_eval.py]
+        O[league_eval.py]
+        P[multiline_eval.py]
+    end
+    B --> C
+    B --> D
+    B --> E
+    B --> F
+    B --> G
+    B --> H
+    B --> I
+    B --> J
+    C --> K
+    D --> K
+    E --> K
+    F --> K
+    G --> K
+    H --> K
+    I --> K
+    J --> K
+    K --> L
+    L --> M
+    L --> N
+    L --> O
+    L --> P

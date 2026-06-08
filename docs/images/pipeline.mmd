@@ -1,0 +1,6 @@
+graph LR
+    A[Raw CSVs<br/>Football-Data.co.uk] --> B[Data Loader<br/>MatchRecord Schema]
+    B --> C[Feature Engineering<br/>64 Features]
+    C --> D[Model Training<br/>LightGBM]
+    D --> E[Evaluation<br/>Backtest + ROI]
+    E --> F[Predictions<br/>Edge Detection]

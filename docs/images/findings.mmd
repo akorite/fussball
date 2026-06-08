@@ -1,0 +1,13 @@
+graph TD
+    A[Market Efficiency Study] --> B{Can we beat closing odds?}
+    B -->|No| C[Log Loss: 0.6762 vs 0.6759]
+    B -->|Yes, marginally| D[Opening Odds Edge]
+    D --> E[+4.2% ROI at 5% edge]
+    D --> F[+5.9% ROI at 1% edge]
+    A --> G{What signals work?}
+    G -->|Yes| H[Market Movement Direction]
+    H --> I[55.4% WR when odds drift down]
+    G -->|Yes| J[Rest Advantage]
+    J --> K[#4 most important feature]
+    G -->|No| L[League-Specific Models]
+    L --> M[Overfit - zero weight in ensemble]
