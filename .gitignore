@@ -1,0 +1,71 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+.installed.cfg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# uv
+uv.lock
+
+# Test / coverage artifacts
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.cover
+.tox/
+
+# Type checkers / linters
+.ruff_cache/
+.mypy_cache/
+.pyright_cache/
+.vscode/
+.idea/
+
+# Data (large files, regenerated from sources)
+data/raw/
+data/processed/
+data/models/
+data/backtest_results.json
+data/*.png
+data/*.parquet
+data/*.csv
+data/*.joblib
+data/*.pkl
+
+# Notebooks (exploration artifacts)
+notebooks/
+!notebooks/.gitkeep
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.local
+*.local
+
+# Logs
+*.log
+logs/
